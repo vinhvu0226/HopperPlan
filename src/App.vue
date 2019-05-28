@@ -1,19 +1,32 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <GmapMap
+    :center="{lat:10, lng:10}"
+    :zoom="7"
+    style="height: 500px"
+  >
+  <GmapMarker
+    :key="index"
+    v-for="(m, index) in markers"
+    :position="m.position"
+    :clickable="true"
+    :draggable="true"
+    @click="center=m.position"
+  />
+  </GmapMap>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
-export default {
-  name: 'app',
-  components: {
-    HelloWorld
+  export default {
+    mounted () {
+      // At this point, the child GmapMap has been mounted, but
+      // its map has not been initialized.
+      // Therefore we need to write mapRef.$mapPromise.then(() => ...)
+  
+      this.$refs.mapRef.$mapPromise.then((map) => {
+        map.panTo({lat: 1.38, lng: 103.80})
+      })
+    }
   }
-}
 </script>
 
 <style>
